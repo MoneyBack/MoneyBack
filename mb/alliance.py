@@ -4,6 +4,8 @@ Created on Aug 13, 2013
 
 @author: Carl, Aaron
 '''
+
+import os
 import time
 import urllib
 import urllib2
@@ -12,7 +14,6 @@ import hashlib
 import hmac
 import uuid
 from mb.logger import MBLogger
-import os
 
 _OAUTH_SIGN_METHOD = 'HMAC-SHA1'
 _OAUTH_VERSION = '1.0'
@@ -31,15 +32,6 @@ class YiqifaAPI(object):
         self.consumerSecret = secret
 
     def call(self, req):
-        #组装参数
-        reqParam = dict()
-        reqParam["consumerKey"] = self.consumerKey
-        reqParam["v"] = self.apiVersion
-        reqParam["format"] = self.dataFormat
-        reqParam["method"] = req.getMethodName()
-        reqParam["timestamp"] = time.strftime('%Y-%m-%d %H:%M:%S')
-        reqParam["partner_id"] = "MBSDK"
-
         #获取业务参数
         apiParams = req.getAPIParam()
         
@@ -52,7 +44,8 @@ class YiqifaAPI(object):
 
         #解析结果
         if r:
-            print r
+            #处理中文编码
+            print r.decode('GBK').encode('utf-8')
 
     def httpCall(self, reqUrl, key, secret):
         au = self.genOauth(reqUrl, key, secret)
@@ -65,8 +58,7 @@ class YiqifaAPI(object):
             resp = urllib2.urlopen(req)
             respData = resp.read()
         except:
-            errorInfo = os.sys.exc_info()
-            MBLogger.error("Error occurred while sending http request to Alliance...")
+            MBLogger.error("Error occurred while sending http request to Alliance...", exc_info=True)
         finally:
             if resp:
                 resp.close()
@@ -80,14 +72,14 @@ class YiqifaAPI(object):
         baseStr = self.genBaseStr(reqUrl, mergeParams)
         tk = "%s&%s" % (secret, _OAUTH_TOKEN)
         sign = self.genSign(tk, baseStr)
-        return "OAuth %s, oauth_signature=\"%s\"" % (self.encodeParams(',', authParams), sign)
+        return "OAuth %s, oauth_signature=\"%s\"" % (self.encodeParams(',', authParams, True), sign)
 
 
     def genSign(self, key, data):
         return self.quoteStr(base64.b64encode(hmac.new(key, data, hashlib.sha1).digest()))
 
     def genBaseStr(self, reqUrl, authParams):
-        return "GET&%s&%s" % (self.getBaseReqUrl(reqUrl), self.encodeParams('&', authParams))
+        return "GET&%s&%s" % (self.getBaseReqUrl(reqUrl), self.encodeBaseParams(authParams))
 
     def getBaseReqUrl(self, reqUrl):
         n = reqUrl.find('?')
@@ -97,6 +89,9 @@ class YiqifaAPI(object):
 
     def parseGetParams(self, reqUrl):
         d = dict()
+        i = reqUrl.find('?')
+        if i > 0:
+            reqUrl = reqUrl[i+1:]
         for s in reqUrl.split('&'):
             n = s.find('=')
             if n > 0:
@@ -117,13 +112,25 @@ class YiqifaAPI(object):
     def genNonce(self):
         return uuid.uuid4().hex
 
-    def encodeParams(self, joinStr, kw):
+    def encodeParams(self, joinStr, kw, quoteValue=False):
         if kw:
             args = []
             for k, v in kw.iteritems():
                 qv = v.encode('utf-8') if isinstance(v, unicode) else str(v)
-                args.append('%s=%s' % (k, self.quoteStr(qv)))
+                args.append(('%s=\"%s\"' % (k, self.quoteStr(qv))) if quoteValue else ('%s=%s' % (k, self.quoteStr(qv))))
             return joinStr.join(args)
+        return ''
+    
+    def encodeBaseParams(self, kw):
+        if kw:
+            baseEncodeStr = None
+            for k, v in kw.iteritems():
+                qv = v.encode('utf-8') if isinstance(v, unicode) else str(v)
+                if baseEncodeStr:
+                    baseEncodeStr = "%s%s%s%s%s" % (baseEncodeStr, "%26", k, "%3D", self.quoteStr(qv))
+                else:
+                    baseEncodeStr = "%s%s%s" % (k, "%3D", self.quoteStr(qv))
+            return baseEncodeStr
         return ''
     
     def quoteStr(self, s):
