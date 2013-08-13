@@ -20,10 +20,6 @@ class Context():
 
 class Home:
     def GET(self):
-        print("hello world")
-        db = web.database(dbn='mysql', db='test', user='root', passwd='asdfgh')
-        print db.select('student', where='id=11')[0]
-        MBLogger.info("hello")
         return _Template.render("home")
 
 class Redirect:

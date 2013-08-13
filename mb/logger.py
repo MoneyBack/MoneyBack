@@ -10,6 +10,9 @@ import logging
 from logging.handlers import RotatingFileHandler
 
 LOG_FOLDER = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'logs' + os.path.sep)
+'''如果日志文件夹不存在，则创建该文件夹'''
+if not os.path.exists(LOG_FOLDER):
+    os.makedirs(LOG_FOLDER)
 
 MBLogger = logging.getLogger('MBLogger')
 logging.basicConfig(level=logging.DEBUG, datefmt='%d %b %Y %H:%M:%S', filemode='w')
