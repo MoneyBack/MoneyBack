@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% block title %}
+还在等什么，同样的商品，用更少的钱买！！！
+{% endblock%}
+{% block css %}
+<link rel="stylesheet" href="/static/css/style.css" type="text/css" charset="utf-8"/>
+<link rel="stylesheet" href="/static/css/responsive.css" type="text/css" charset="utf-8"/>
+{{super()}}
+{% endblock %}
+{% block js %}
+<script src="/static/js/jquery.js" type="text/javascript"></script>
+<script src="/static/js/scripts.js" type="text/javascript"></script>
+{{super()}}
+{% endblock %}
+{% block style %}
+<style></style>
+{% endblock %}
+{% block content %}
+<div id="topbar">
+	<div class="nav-bar">
+		<div id="collections">
+			<ol class="">
+				<li>
+					<a class="nav-link" id="none" href="#">
+						<span class="name"><strong>...</strong></span>
+					</a>
+				</li>
+				<li>
+					<a class="nav-link" id="fanfan" href="#">
+						<span class="name"><strong>返返</strong></span>
+					</a>
+				</li>
+				<li>
+					<a class="nav-link" id="bijia" href="#">
+						<span class="name"><strong>比价</strong></span>
+					</a>
+				</li>
+				<li>
+					<a class="nav-link" id="blog" href="#">
+						<span class="name"><strong>博客</strong></span>
+					</a>
+				</li>
+				<li>
+					<a class="nav-link" id="bbs" href="#">
+						<span class="name"><strong>论坛</strong></span>
+					</a>
+				</li>
+			</ol>
+		</div>
+	</div>
+	<div class="user row">
+		<div class="span11 offset1 text-center">
+			<ul class="nav nav-pills nav-btn pull-right">
+	        	<li class="active"><a href="#">登录</a></li>
+	            <li><a href="#">注册</a></li>
+	    	</ul>
+		</div>
+	</div>
+</div>
+{% include 'bad_experience_alert.html' ignore missing %}
+<header id="searchWrapper" class="fixedContainer no-radius">
+	<div id="search" class="search">
+		<span class="logo"></span>
+		<form id="searchF" name="searchF" method="get" action="/search">
+			<div class="searchBoxOutter">
+				<div id="searchBoxInner" class="searchBoxInner">
+					<div id="searchBox" class="searchBox">
+						<input id="searchI" name="searchI" type="text" autocomplete="off" value="" placeholder="搜索">
+					</div>
+				</div>
+			</div>
+			<div id="searchBtnC">
+				<button id="searchBtn" class="searchBtn">
+					<span class="searchBtnIcon"></span>
+				</button>
+			</div>
+		</form>
+	</div>
+</header>
+<article class="fixedContainer"> 
+	<section id="sites">
+	    <ul>
+	    	{% for i in range(12)%}
+	        <li class="card text-center">
+	            <a class="" href="http://www.baidu.com" target="_blank">
+	            	{% if i%3 == 0 %}
+	                <img src="/static/img/{{type if type else 'default'}}/sites/renren.png" alt="">
+	                {% elif i%3 == 1%}
+	                <img src="/static/img/{{type if type else 'default'}}/sites/jd.png" alt="">
+	                {% else %}
+	                <img src="/static/img/{{type if type else 'default'}}/sites/sina.png" alt="">
+	                {% endif %}
+	            </a>
+	            <div class="s_info hide">OOO</div>
+	        </li>
+	        {% endfor %}                         
+	    </ul>
+	</section>
+</article>
+<footer class="fixedContainer no-radius navbar-fixed-bottom">
+	<div class="text-center">
+		<div class="ft-info">
+			<hr class="divider">
+			<a href="{{hostUrl}}/about_us">关于我们</a> ┊ <a href="#">大事记</a> ┊ <a href="#">广告服务</a> ┊ <a href="#">联系我们</a>
+		</div>
+	    <p><small>Copyright &copy;2013 - 2015 fanfan.com. All Rights Reserved.</small></p>
+	</div>
+</footer>
+{% endblock %}

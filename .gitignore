@@ -5,6 +5,8 @@
 
 # Packages
 logs
+.metadata
+.settings
 *.egg
 *.egg-info
 dist
