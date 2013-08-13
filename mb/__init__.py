@@ -4,7 +4,8 @@
 
 __version__ = "1.0.0"
 __author__ = [
-    "Carl Chen <chengx168000@outlook.com>"
+    "Carl Chen <chengx168000@outlook.com>",
+    "Aaron <cmwang0724@gmail.com>"
 ]
 
 import config

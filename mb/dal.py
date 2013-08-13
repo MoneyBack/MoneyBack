@@ -2,7 +2,7 @@
 '''
 Created on Jul 18, 2013
 
-@author: Carl
+@author: Carl, Aaron
 '''
 
 import MySQLdb
