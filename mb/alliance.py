@@ -5,7 +5,6 @@ Created on Aug 13, 2013
 @author: Carl, Aaron
 '''
 
-import os
 import time
 import urllib
 import urllib2
@@ -45,7 +44,8 @@ class YiqifaAPI(object):
         #解析结果
         if r:
             #处理中文编码
-            print r.decode('GBK').encode('utf-8')
+            return r.decode('GBK').encode('utf-8')
+        return ''
 
     def httpCall(self, reqUrl, key, secret):
         au = self.genOauth(reqUrl, key, secret)
@@ -158,14 +158,14 @@ class WebsiteCategoryReqeust(object):
             fields=self.fields, \
             type=self.type)
 
-class WebsiteListGetRequest(object):
+class WebsiteListRequest(object):
 
     catId = None
     fields = None
     type = None
-    methodName = "open.website.get"
+    methodName = "open.website.list.get"
 
-    def __init__(self, catId, fields, siteType):
+    def __init__(self, fields, siteType, catId):
         self.catId = catId
         self.fields = fields
         self.type = siteType
