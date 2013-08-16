@@ -29,3 +29,18 @@ WEBSITE_TYPE = "2"
 WEBSITE_CATEGORY_REQUEST_FIELDS = "web_catid,web_cname,amount,web_type,modified_time,total"
 WEBSITE_LIST_REQUEST_FIELDS = "web_id,web_name,web_catid,logo_url,web_o_url,commission,total"
 #################联盟相关配置 End  ###################
+
+############database configure information############
+#Master read/write database
+DB_MASTER_TYPE = 'mysql'
+DB_MASTER_HOST = 'localhost'
+DB_MASTER_DBNAME = 'moneyBack'
+DB_MASTER_USER = 'mbuser'
+DB_MASTER_PASSWD = 'mbfighter'
+#Slave read database - server behind HA proxy of mysql
+DB_SLAVE_TYPE = 'mysql'
+DB_SLAVE_HOST = 'localhost'
+DB_SLAVE_DBNAME = 'moneyBack'
+DB_SLAVE_USER = 'mbuser'
+DB_SLAVE_PASSWD = 'mbfighter'
+############database configure information############
