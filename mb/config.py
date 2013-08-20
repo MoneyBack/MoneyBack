@@ -5,6 +5,7 @@ Created on Jul 11, 2013
 @author: Carl, Aaron
 '''
 
+import os
 import string
 
 urls = (
@@ -31,6 +32,10 @@ WEBSITE_LIST_REQUEST_FIELDS = "web_id,web_name,web_catid,logo_url,web_o_url,comm
 #################联盟相关配置 End  ###################
 
 ############database configure information############
+DB_USER = 'root'
+DB_PASSWD = 'rootpwd'
+INIT_DEV_ENV = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'db%sinitDevEnv.sql' % os.sep)
+INIT_TABLES = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'db%sinit_tables.sql' % os.sep)
 #Master read/write database
 DB_MASTER_TYPE = 'mysql'
 DB_MASTER_HOST = 'localhost'

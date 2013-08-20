@@ -1,7 +1,10 @@
+use moneyBack; -- 切换到moneyBack数据库
+
 /*电商信息表*/
 DROP TABLE IF EXISTS `electric_purchaser`; 
 CREATE TABLE `electric_purchaser` (
       `id` int(10) NOT NULL AUTO_INCREMENT,
+      `merchant_id` int(10) NOT NULL COMMENT '电商在联盟的ID',
       `name` varchar(50) NOT NULL COMMENT 'name of electric purchaser',
       `type` tinyint(4) NOT NULL COMMENT '1电商 2团购 3精品推荐网站',
       `url` varchar(100) NOT NULL,

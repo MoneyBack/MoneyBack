@@ -10,6 +10,7 @@ from web.webapi import HTTPError
 from mb.logger import MBLogger
 from mb.config import ERROR_NO_404_STR, ERROR_NO_500_STR
 from mb.scheduler import Scheduler
+from mb.db import MBDB
 
 #模板
 _Template = None
@@ -19,6 +20,7 @@ class Context():
         global _Template
         _Template  = mb.template.Template()
         _scheduler = Scheduler()
+#        _MBDB = MBDB()
 
 class Home:
     def GET(self):

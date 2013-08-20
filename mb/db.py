@@ -5,7 +5,14 @@ Created on Jul 11, 2013
 @author: Carl, Aaron
 '''
 
+import subprocess
 import web, config
+
+class MBDB():
+    def __init__(self):
+        process = subprocess.Popen('mysql -u%s -p%s' % (config.DB_USER, config.DB_PASSWD), stdout=subprocess.PIPE, stdin=subprocess.PIPE, shell=True)
+        output = process.communicate('source ' + config.INIT_DEV_ENV)
+        output = process.communicate('source ' + config.INIT_TABLES)
 
 
 master = web.database(
