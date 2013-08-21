@@ -27,7 +27,7 @@ class NoWorkersAvailable(Exception):
 def handleThreadException(request, exc_info):
     """默认的错误发生时回调函数"""
     traceback.print_exception(*exc_info)
-    MBLogger.error("Error occurred while handling the reqeust[" + request.taskID + "]...", exc_info=True)
+    MBLogger.error("Error occurred while handling the reqeust[" + str(request.taskID) + "]...", exc_info=True)
 
 #构建一个请求
 def makeTask(_callable, args, callback=None, errorCallback=handleThreadException):
@@ -35,7 +35,7 @@ def makeTask(_callable, args, callback=None, errorCallback=handleThreadException
         return WorkRequest(_callable, args[0], args[1], callback=callback,
             errorCallback=errorCallback)
     else:
-        return WorkRequest(_callable, [args], None, callback=callback,
+        return WorkRequest(_callable, [args] if args else None, None, callback=callback,
             errorCallback=errorCallback)
 
 #构建多个请求
@@ -78,7 +78,13 @@ class WorkerThread(threading.Thread):
                     self._tasksQueue.put(request)
                     break
                 try:
-                    result = request.callable(*request.args, **request.kwds)
+                    # 有参数的方法
+                    if request.args:
+                        result = request.callable(*request.args, **request.kwds)
+                    else:
+                        # 无参数的方法
+                        result = request.callable(**request.kwds)
+                    # 异步回调
                     if _ASYNC:
                         self._resultsQueue.put((request, result))
                     else:
@@ -87,12 +93,13 @@ class WorkerThread(threading.Thread):
                             request.callback(request, result)
                 except:
                     request.exception = True
+                    # 异步错误回调
                     if _ASYNC:
                         self._resultsQueue.put((request, sys.exc_info()))
                     else:
                         # 发生异常，错误回调
                         if request.exception and request.errorCallback:
-                            request.errorCallback(request, result)
+                            request.errorCallback(request, sys.exc_info())
 
     def dismiss(self):
         """处理完当前任务后退出"""

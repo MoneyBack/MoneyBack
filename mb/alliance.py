@@ -165,7 +165,7 @@ class WebsiteListRequest(object):
     type = None
     methodName = "open.website.list.get"
 
-    def __init__(self, fields, siteType, catId):
+    def __init__(self, fields, catId, siteType):
         self.catId = catId
         self.fields = fields
         self.type = siteType

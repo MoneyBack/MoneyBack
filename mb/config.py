@@ -25,8 +25,8 @@ ERROR_NO_500 = string.atoi(ERROR_NO_500_STR)
 APP_KEY = "137568413663310785"
 APP_SECRET = "5d3c9a369a9554f153f9f3fb0bfb4365"
 
-WEBSITE_TYPE = "1"
-WEBSITE_TYPE = "2"
+WEBSITE_TYPE_BUSINESS = "1"
+WEBSITE_TYPE_COMMODITY = "2"
 WEBSITE_CATEGORY_REQUEST_FIELDS = "web_catid,web_cname,amount,web_type,modified_time,total"
 WEBSITE_LIST_REQUEST_FIELDS = "web_id,web_name,web_catid,logo_url,web_o_url,commission,total"
 #################联盟相关配置 End  ###################
