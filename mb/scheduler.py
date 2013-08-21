@@ -4,6 +4,8 @@ Created on Aug 13, 2013
 
 @author: Carl, Aaron
 '''
+
+import time
 from mb.config import WEBSITE_TYPE, WEBSITE_CATEGORY_REQUEST_FIELDS, APP_KEY, APP_SECRET
 from mb.alliance import YiqifaAPI, WebsiteCategoryReqeust
 from mb.threadpool import *
@@ -14,13 +16,14 @@ wcr = WebsiteCategoryReqeust(WEBSITE_CATEGORY_REQUEST_FIELDS, WEBSITE_TYPE)
 apiObj = YiqifaAPI(APP_KEY, APP_SECRET)
 
 '''处理联盟信息的回调函数'''
-def handleAllianceInfo(result):
+def handleAllianceInfo(request, result):
     print result
 
 allianceTask = makeTask(apiObj.call, wcr, callback=handleAllianceInfo)
 
-#(Task, intervalTime, waitTime)
-_SCHED_TASKS = [(allianceTask, 1 * 24 * 60 * 60, 0)]
+#(Task, intervalTime, timestamp, taskName)
+_NOW = int(time.time())
+_SCHED_TASKS = [(allianceTask, 1 * 24 * 60 * 60, _NOW, "AllianceTask")]
 #################Task相关配置 End  ###################
 
 class Scheduler(threading.Thread):
@@ -44,9 +47,9 @@ class Scheduler(threading.Thread):
         self._dismissed.set()
         self._waiter.set()
     
-    #按照waitTime来排序  
+    #按照timestamp来排序  
     def sort(self, taskList):
-        sorted(taskList, key=lambda task : task[2])
+        taskList.sort(key=lambda task : task[2], reverse=True)
     
     def run(self):
         self.sort(self._taskList)
@@ -58,13 +61,16 @@ class Scheduler(threading.Thread):
     
     #等待触发执行任务，并重新计算下次触发时间        
     def waitAndFire(self, task):
-        if task[2] > 0:
-            self._waiter.wait(task[2])
+        # 等待时间 = 上次时间戳 - 当前时间
+        waitTime = task[2] - int(time.time())
+        if waitTime > 0:
+            self._waiter.wait(waitTime)
         if not self._dismissed.is_set():
-            self._taskList.append((task[0], task[1], task[1]))
-            self.fire(task[0])
+            self._taskList.append((task[0], task[1], int(time.time()) + task[1], task[3]))
+            self.fire(task[0], task[3])
             self.sort(self._taskList)
     
     #把任务放入任务池，执行任务
-    def fire(self, task):
+    def fire(self, task, taskName):
+        MBLogger.info("Fire Task [%s] ... " % taskName)
         self._pool.putTask(task)

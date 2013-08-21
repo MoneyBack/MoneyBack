@@ -19,8 +19,8 @@ class Context():
     def init(self):
         global _Template
         _Template  = mb.template.Template()
+        _MBDB = MBDB()
         _scheduler = Scheduler()
-#        _MBDB = MBDB()
 
 class Home:
     def GET(self):

@@ -11,6 +11,7 @@ import Queue
 import traceback
 from mb.logger import MBLogger
 
+_ASYNC = False
 
 #与线程池相关的自定义异常
 class NoResultsPending(Exception):
@@ -78,10 +79,20 @@ class WorkerThread(threading.Thread):
                     break
                 try:
                     result = request.callable(*request.args, **request.kwds)
-                    self._resultsQueue.put((request, result))
+                    if _ASYNC:
+                        self._resultsQueue.put((request, result))
+                    else:
+                        # 正常的处理完任务的回调
+                        if request.callback:
+                            request.callback(request, result)
                 except:
                     request.exception = True
-                    self._resultsQueue.put((request, sys.exc_info()))
+                    if _ASYNC:
+                        self._resultsQueue.put((request, sys.exc_info()))
+                    else:
+                        # 发生异常，错误回调
+                        if request.exception and request.errorCallback:
+                            request.errorCallback(request, result)
 
     def dismiss(self):
         """处理完当前任务后退出"""

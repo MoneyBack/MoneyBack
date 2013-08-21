@@ -7,12 +7,24 @@ Created on Jul 11, 2013
 
 import subprocess
 import web, config
+from logger import MBLogger
 
 class MBDB():
     def __init__(self):
-        process = subprocess.Popen('mysql -u%s -p%s' % (config.DB_USER, config.DB_PASSWD), stdout=subprocess.PIPE, stdin=subprocess.PIPE, shell=True)
-        output = process.communicate('source ' + config.INIT_DEV_ENV)
-        output = process.communicate('source ' + config.INIT_TABLES)
+        self.execSQLBatch('mysql -u%s -p%s' % (config.DB_USER, config.DB_PASSWD), 'source ' + config.INIT_DEV_ENV, "Init Environment", "Error occurred while initializing development environment")
+        self.execSQLBatch('mysql -u%s -p%s' % (config.DB_USER, config.DB_PASSWD), 'source ' + config.INIT_TABLES, "Init Tables", "Error occurred while initializing development environment")
+        
+    
+    def execSQLBatch(self, cmd, subCmd, debugTag, errorTag):
+        try:
+            process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stdin=subprocess.PIPE, shell=True)
+            output = process.communicate(subCmd)
+            MBLogger.debug("%s ... %s" % (debugTag, output[0]))
+            if (output[1]):
+                MBLogger.error("%s ... %s" % (errorTag, output[1]))
+        except:
+            MBLogger.error("Error occurred while executing the sql batch ...", exc_info=True)
+        
 
 
 master = web.database(
