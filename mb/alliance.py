@@ -160,13 +160,13 @@ class WebsiteCategoryReqeust(object):
 
 class WebsiteListRequest(object):
 
-    catId = None
+    catid = None
     fields = None
     type = None
     methodName = "open.website.list.get"
 
-    def __init__(self, fields, catId, siteType):
-        self.catId = catId
+    def __init__(self, fields, catid, siteType):
+        self.catid = catid
         self.fields = fields
         self.type = siteType
     
@@ -175,6 +175,6 @@ class WebsiteListRequest(object):
 
     def getAPIParam(self):
         return dict( \
-            catId=self.catId, \
+            catid=self.catid, \
             fields=self.fields, \
             type=self.type)
