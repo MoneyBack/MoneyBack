@@ -22,6 +22,8 @@ class AllianceError(Exception):
     
 class AllianceTask():
     
+    catIdNameMap = {}
+    
     def execRequest(self, reqObj, loggerTag):
         apiObj = YiqifaAPI(APP_KEY, APP_SECRET)
         jsonStr = apiObj.call(reqObj)
@@ -46,6 +48,7 @@ class AllianceTask():
         webCats = []
         for webCategoryInfo in categoryJson['response']['web_cats']['web_cat']:
             webCats.append(webCategoryInfo['web_catid'])
+            self.catIdNameMap[webCategoryInfo['web_catid']] = webCategoryInfo['web_cname']
         return ",".join(webCats)
     
     def getCallable(self):
@@ -59,7 +62,15 @@ class AllianceTask():
 
     '''处理联盟信息的回调函数'''
     def handleAllianceInfo(self, request, result):
-        print result
+        for webInfo in result['response']['web_list']['web']:
+            print "webId - %s" % webInfo['web_id']
+            print "webName - %s" % webInfo['web_name']
+            print "webCatId - %s" % webInfo['web_catid']
+            print "webCatName - %s" % self.catIdNameMap[webInfo['web_catid']]
+            print "logoUrl - %s" % webInfo['logo_url']
+            print "webOUrl - %s" % webInfo['web_o_url']
+            print "Commission - %s" % webInfo['commission']
+            print "==========================================="
         
 _AllianceTask = AllianceTask()
     
