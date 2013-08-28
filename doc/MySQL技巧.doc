@@ -1,0 +1,34 @@
+﻿MySQL 技巧总结
+
+1. key记录存在则替换，不存在则插入和key记录存在则更新，不存在则插入
+
+key为唯一键或者主键
+（1） key存在则替换，不存在则插入
+           replace into  
+ 
+ t_test | CREATE TABLE `t_test` (
+ `ikey` int(11) NOT NULL default '0',
+ `value` varchar(21) NOT NULL default '',
+ `icount` int(11) NOT NULL default '0',
+ PRIMARY KEY (`ikey`)
+) ENGINE=MyISAM DEFAULT CHARSET=gbk |
+ 
+     对于这样一个表.当要记录ikey=1,value='a',icount=0时,由于不知道表里有没有ikey=1的项.我们可能会先select,然后看有没有结果,如果有,则使用update进行更新.如果没有,则使用insert进行插入.
+ 
+    不过在大并发量的数据操作时,可能有时一个有主键的select查询都要用上2s,如果对旧数据不关心,减少不必要的操作显得犹为重要.
+    使用replace一个语句可以完成上面两个语句的功能,其语法与insert差不多.如上面的操作可以写为replace into t_test set ikey=1,value='a',icount=0;则表中有ikey为1时,先删除旧数据.然后插入新数据.否则直接插入数据.
+   
+（2） key存在则更新，不存在则插入
+           insert  into  .... on duplicate key update   
+对于需要根据原记录进行操作的.如表中icount字段用于计数,当没有记录时,插入的value为0,当有记录时,value需要更新为value+1,这时replace就不能完成这个功能.使用insert则可以,其基本语法是insert into ... on duplicate key update...,如上述语句为
+insert into t_test set ikey=1,value='a',value2=1 on duplicate key update value2=value2+1;
+     如果表中有多个唯一索引,如对value字段加个unique key.这时表中有ikey和value两个唯一索引,replace会把所有与其唯一索引值相同的数据项删除,再插入新记录.如表中有两个记录
++------+-------+--------+
+| ikey | value | icount |
++------+-------+--------+
+|   2 | a    |    10 | 
+|   1 | b    |    40 | 
++------+-------+--------+
+     则replace into t_test set ikey=1,value='a',icount=0;会把表中的两条记录都删除,然后插入新记录.
+     而insert into t_test set ikey=1,value='a',icount=0 on duplicate key update icount=icount+1则只更新一条记录.其效果相当于update t_test set icount=icount+1 where ikey=1 or value='a' limit 1;
+

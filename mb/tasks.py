@@ -9,6 +9,7 @@ import json
 from mb.logger import MBLogger
 from mb.config import WEBSITE_TYPE_BUSINESS, WEBSITE_CATEGORY_REQUEST_FIELDS, WEBSITE_LIST_REQUEST_FIELDS, APP_KEY, APP_SECRET
 from mb.alliance import YiqifaAPI, WebsiteCategoryReqeust, WebsiteListRequest
+from mb.db import MBDB
 
 #################Alliance Task Start###################
 '''获取联盟信息Task'''
@@ -63,14 +64,35 @@ class AllianceTask():
     '''处理联盟信息的回调函数'''
     def handleAllianceInfo(self, request, result):
         for webInfo in result['response']['web_list']['web']:
-            print "webId - %s" % webInfo['web_id']
-            print "webName - %s" % webInfo['web_name']
-            print "webCatId - %s" % webInfo['web_catid']
-            print "webCatName - %s" % self.catIdNameMap[webInfo['web_catid']]
-            print "logoUrl - %s" % webInfo['logo_url']
-            print "webOUrl - %s" % webInfo['web_o_url']
-            print "Commission - %s" % webInfo['commission']
-            print "==========================================="
+#             print "webId - %s" % webInfo['web_id']
+#             print "webName - %s" % webInfo['web_name']
+#             print "webCatId - %s" % webInfo['web_catid']
+#             print "webCatName - %s" % self.catIdNameMap[webInfo['web_catid']]
+#             print "logoUrl - %s" % webInfo['logo_url']
+#             print "webOUrl - %s" % webInfo['web_o_url']
+#             print "Commission - %s" % webInfo['commission']
+#             print "==========================================="
+            result = MBDB.query("insert into electric_purchaser " \
+               "set merchant_id=$merchant_id, name=$name, merchant_cat_id=$merchant_cat_id, " \
+               "merchant_cat_name=$merchant_cat_name, type=$type, url=$url, logo_url=$logo_url, " \
+               "click_url=$click_url, url_source=$url_source, rebate=$rebate, rebate_info=$rebate_info, " \
+               "collection=$collection, click_rate=$click_rate, sale_promotion=$sale_promotion " \
+               "on duplicate key update click_url=$click_url",
+               sql_vars={'merchant_id':webInfo['web_id'],
+                         'name':webInfo['web_name'],
+                         'merchant_cat_id':webInfo['web_catid'],
+                         'merchant_cat_name':self.catIdNameMap[webInfo['web_catid']],
+                         'type':1,
+                         'url':'test_url',
+                         'logo_url':webInfo['logo_url'],
+                         'click_url':webInfo['web_o_url'],
+                         'url_source':1,
+                         'rebate':1 if webInfo['commission'] else 2,
+                         'rebate_info':webInfo['commission'],
+                         'collection':0,
+                         'click_rate':0,
+                         'sale_promotion':1})
+            print result
         
 _AllianceTask = AllianceTask()
     

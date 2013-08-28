@@ -45,7 +45,7 @@ db.delete('user', where='id=$id', vars={'id':100})
 和Java比，web.py的db操作非常简单，这主要得益于python的**kw参数和内建的dict支持
 '''
 
-class MBDB():
+class DB():
     def __init__(self):
         self.execSQLBatch('mysql -u%s -p%s' % (config.DB_USER, config.DB_PASSWD), 'source ' + config.INIT_DEV_ENV, "Init Environment", "Error occurred while initializing development environment")
         self.execSQLBatch('mysql -u%s -p%s' % (config.DB_USER, config.DB_PASSWD), 'source ' + config.INIT_TABLES, "Init Tables", "Error occurred while initializing development environment")
@@ -95,3 +95,5 @@ class MBDB():
     
     def delete(self, table, where, using=None, sql_vars=None, _test=False):
         return self._MASTER.delete(table=table, where=where, using=using, vars=sql_vars, _test=_test)
+    
+MBDB = DB()
