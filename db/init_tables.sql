@@ -18,7 +18,8 @@ CREATE TABLE `electric_purchaser` (
       `collection` int(20) NOT NULL DEFAULT '0' COMMENT '被用户添加量',
       `click_rate` bigint(50) NOT NULL COMMENT '点击率',
       `sale_promotion` tinyint(4) NOT NULL COMMENT '是否有优惠活动',
-      PRIMARY KEY (`id`)
+      PRIMARY KEY (`id`),
+      UNIQUE INDEX `index_var` (`merchant_id`, `name`) -- 唯一索引
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*个人tab页表*/

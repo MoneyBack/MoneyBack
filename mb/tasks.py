@@ -84,7 +84,6 @@ class AllianceTask():
                          'collection':0,
                          'click_rate':0,
                          'sale_promotion':1})
-            print result
         
 _AllianceTask = AllianceTask()
     
