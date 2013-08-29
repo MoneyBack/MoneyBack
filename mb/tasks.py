@@ -64,14 +64,6 @@ class AllianceTask():
     '''处理联盟信息的回调函数'''
     def handleAllianceInfo(self, request, result):
         for webInfo in result['response']['web_list']['web']:
-#             print "webId - %s" % webInfo['web_id']
-#             print "webName - %s" % webInfo['web_name']
-#             print "webCatId - %s" % webInfo['web_catid']
-#             print "webCatName - %s" % self.catIdNameMap[webInfo['web_catid']]
-#             print "logoUrl - %s" % webInfo['logo_url']
-#             print "webOUrl - %s" % webInfo['web_o_url']
-#             print "Commission - %s" % webInfo['commission']
-#             print "==========================================="
             result = MBDB.query("insert into electric_purchaser " \
                "set merchant_id=$merchant_id, name=$name, merchant_cat_id=$merchant_cat_id, " \
                "merchant_cat_name=$merchant_cat_name, type=$type, url=$url, logo_url=$logo_url, " \
