@@ -9,6 +9,7 @@ import json
 from mb.logger import MBLogger
 from mb.config import WEBSITE_TYPE_BUSINESS, WEBSITE_CATEGORY_REQUEST_FIELDS, WEBSITE_LIST_REQUEST_FIELDS, APP_KEY, APP_SECRET
 from mb.alliance import YiqifaAPI, WebsiteCategoryReqeust, WebsiteListRequest
+from mb.config import DB_TABLE_ELECTRIC_PURCHASER
 from mb.db import MBDB
 
 #################Alliance Task Start###################
@@ -107,17 +108,20 @@ class AllianceTask():
     '''处理联盟信息的回调函数'''
     def handleAllianceInfo(self, request, result):
         siteSet = set()
+        merchants = MBDB.select(DB_TABLE_ELECTRIC_PURCHASER, what="merchant_id, name")
+        merchantsMap = dict()
         for webInfo in result['response']['web_list']['web']:
             if self.SITE_INFO_MAPPER.has_key(webInfo['web_name']) and not webInfo['web_name'] in siteSet:
                 siteSet.add(webInfo['web_name'])
                 siteInfo = self.SITE_INFO_MAPPER[webInfo['web_name']]
-                MBDB.query("insert into electric_purchaser " \
+                merchantsMap[webInfo['web_id']] = webInfo['web_name']
+                MBDB.query("insert into %s " \
                    "set merchant_id=$merchant_id, name=$name, merchant_cat_id=$merchant_cat_id, " \
                    "merchant_cat_name=$merchant_cat_name, type=$type, url=$url, logo_url=$logo_url, " \
                    "pretty_logo=$pretty_logo, click_url=$click_url, description=$description, " \
                    "url_source=$url_source, rebate=$rebate, rebate_info=$rebate_info, " \
                    "collection=$collection, click_rate=$click_rate, sale_promotion=$sale_promotion " \
-                   "on duplicate key update click_url=$click_url",
+                   "on duplicate key update click_url=$click_url" % DB_TABLE_ELECTRIC_PURCHASER,
                    sql_vars={'merchant_id':webInfo['web_id'],
                              'name':webInfo['web_name'],
                              'merchant_cat_id':webInfo['web_catid'],
@@ -134,6 +138,9 @@ class AllianceTask():
                              'collection':0,
                              'click_rate':0,
                              'sale_promotion':1})
+        for merchant in merchants:
+            if merchantsMap.has_key(str(merchant.merchant_id)) and cmp(merchant.name, merchantsMap[str(merchant.merchant_id)]) == 0:
+                pass
         
 _AllianceTask = AllianceTask()
     

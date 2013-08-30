@@ -9,6 +9,7 @@ import mb
 from web.webapi import HTTPError
 from mb.logger import MBLogger
 from mb.config import ERROR_NO_404_STR, ERROR_NO_500_STR
+from mb.actions import homeAction
 from mb.scheduler import Scheduler
 from mb.db import MBDB
 
@@ -24,7 +25,8 @@ class Context():
 
 class Home:
     def GET(self):
-        return _Template.render("home")
+        data = homeAction.getHomeData()
+        return _Template.render("home", data=data)
 
 class Redirect:
     def GET(self, path):

@@ -36,6 +36,12 @@ DB_USER = 'root'
 DB_PASSWD = 'rootpwd'
 INIT_DEV_ENV = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'db%sinit_env.sql' % os.sep)
 INIT_TABLES = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'db%sinit_tables.sql' % os.sep)
+
+DB_TABLE_ELECTRIC_PURCHASER = 'electric_purchaser'
+DB_TABLE_PERSONAL_PAGE = 'personal_page'
+DB_TABLE_USER_INFO = 'user_info'
+DB_TABLE_USER_BANK_ACCOUNT = 'user_bank_account'
+
 #Master read/write database
 DB_MASTER_TYPE = 'mysql'
 DB_MASTER_HOST = 'localhost'
