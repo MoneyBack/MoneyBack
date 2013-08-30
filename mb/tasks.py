@@ -23,6 +23,49 @@ class AllianceError(Exception):
     
 class AllianceTask():
     
+    SITE_INFO_MAPPER = {
+    u'红星美凯龙 星易家' : (u'http://www.mmall.com/', u'mmall', u'红星美凯龙星易家，红星美凯龙旗下家居建材网上购物商城，主营家居、建材、家具等家装商品。品牌商城汇集国内一线品牌，精品惠低至1折，团购会活动更优惠，提供专业装修公司免费咨询等服务。100%品质保证，售出商品负全责！'),   
+    u'聚尚网' : (u'http://www.fclub.cn/', u'fclub', u'聚尚网fclub提供国际品牌正品的1折起限时抢购。提供货到付款,并由中华联合财产保险公司为每件商品提供正品保险,如工商部门鉴定为假货,即可向保险公司索取全额赔偿。'),   
+    u'上品折扣网' : (u'http://www.shopin.net/', u'shopin', u'上品折扣（shopin）,品牌服装服饰正品折扣商城！女装/男装/内衣/名鞋/运动/休闲户外/箱包配饰/仓储等直供10大频道,全场1折起,价格更实惠。上品折扣承诺：100%专柜正品,每日千款上架,周周新品牌,全国送货到家,方便省心!'),   
+    u'尚品网' : (u'http://www.shangpin.com/', u'shangpin', u'中国领先的时尚奢侈品购物网站，获众多欧美品牌官方授权，销售服装、箱包、鞋履、配饰应季新品，包括GUCCI、BURBERRY、PRADA等国际品牌和DVF、SERGIO ROSSI、STUART WEITZMAN等设计师品牌，每周二、四上新，即刻抢购！'),    
+    u'走秀网' : (u'http://www.xiu.com/', u'xiu', u'走秀网致力于为中国消费者提供海外时尚品牌正品，将全球美好生活带给中国。商品品类涵盖包袋、手表、服装、鞋类、配饰、化妆品等，拥有超过5000个品牌50万种商品。走秀网为互联网高信用AAA级网站，于2011年获得国际资本投资。'),   
+    u'高乐家居' : (u'http://www.gaole.com/', u'gaole', u'高乐家具是国内网购最安全的家具网上商城,是家具行业线上及线下一站式服务体验度最好的家具商城。'), 
+    u'PICC人保车险' : (u'http://www.epicc.com.cn/', u'epicc', u'人保官网直销省更多,安全有保障,无中间环节,车险多省15%,其他保险产品更优惠。优质理赔服务,享受与线下同等理赔服务,更可拥有网上投保专属特色服务;全国10万个网点。'),
+    u'周大福' : (u'http://www.ctfeshop.com.cn/', u'ctfeshop', u'周大福源自“ 真诚 | 永恒 ”历久不变的理念和价值，承传八十余载光辉悠久的历史，主要经营珠宝镶嵌首饰，铂金、K金、黄金产品、钻石产品以及钟表等。周大福官方网络旗舰店选购，可定制专属产品；线上购买，分店取货，全场包邮，可选择支付宝付款。'),
+    u'药房网' : (u'http://www.yaofang.cn/', u'yaofang', u'药房网是京卫大药房网上药店,百万会员共同见证:全网商品超低价,100%正品保证,货到付款,所购商品可到全国京卫大药房免费自提或送货上门,北京8小时送货上门.药妆,药品,中药材,保健品,母婴用品一网打尽!提供24小时免费专业医疗健康咨询:4006509988'),
+    u'1号药网' : (u'http://www.111.com.cn/', u'111', u'认证合法网上药房!品类齐全,价格优惠,一站式在线购药网站,提供中西药品、营养保健、维生素/钙剂、参茸贵细、个人护理等近万种医药产品。特价销售,全网低价,满百包邮,货到付款,当天下单,次日配送,方便快捷！'),
+    u'去哪儿' : (u'http://www.qunar.com/', u'qunar', u'特价机票，超值酒店，省心省钱，聪明你的旅行！'),
+    u'唯品会' : (u'http://www.vipshop.com/', u'vipshop', u'唯品会，一家专门做特卖的网站！秋季上新，全场特价1折起。商品囊括时尚男装、女装、美鞋、美妆、箱包、家纺、配饰、皮具、香水等。每天100个品牌授权特卖，100%正品，支持货到付款，7天无条件退货。欢迎进入唯品会官方网站【1折起】'),
+    u'麦包包' : (u'http://www.mbaobao.com/', u'mbaobao', u'麦包包，高性价比时尚包包网上购物商城。旗下品牌2013新款到货！戈尔本（精品男包）、浪美（潮流PU女包）、DUDU（真牛皮女包）、飞扬空间（可爱女包）、阿尔法（经典女手袋）…麦包包优质服务承诺：10天无条件退换，支持货到付款。买包包？麦包包！'),
+    u'拉手' : (u'http://www.lashou.com/', u'lashou', u'领先中国团购市场,零风险团购、高品质超低折扣。拉手网已覆盖全国500个城市,每天推出多款超低折扣生活、商品、酒店、优惠券等商品,以及当地特色餐厅、电影院。'),
+    u'高朋' : (u'http://www.gaopeng.com/', u'gaopeng', u'高朋网—中国专业团购网站，覆盖全国31个省市直辖市，130多个城市，商品服务涉及：美食餐饮、1折电影票、低价KTV、SPA、美容、健身、旅游酒店、名牌商品等。每日精选团购+每日疯抢爆款，超低价折扣，超优质服务！高朋团购，你的品质之选！'),
+    u'58团购' : (u'http://t.58.com/', u'58t', u'58团购网为您提供美食、KTV、电影票、酒店等团购大全。超低折扣,100%品质保证,未消费,可随时退款!团购,就到58同城团购网。'),
+    u'满座网' : (u'http://www.manzuo.com/', u'manzuo', u'满座网团购站—每天推出高品质团购服务,优惠打折,100%安全认证。为您精选电影院、美食、酒吧、KTV、优惠券等特色商家,团购上满座。'),
+    u'美团' : (u'http://www.meituan.com/', u'meituan', u'美团网(MeiTuan.com）-中国团购市场知名的本地生活消费平台!每天为您精选餐饮美食、电影票、KTV、休闲娱乐、酒店旅游等超低折扣优惠,吃喝玩乐一站式解决!美团网,力推消费者保障计划,让您放心团购!马上开始体验本地优质商家服务吧!'),
+    u'窝窝团' : (u'http://www.55tuan.com/', u'55tuan', u'【窝窝团】团购网站是一家优质的消费服务团购平台,每天推出美食团购,KTV团购,电影票团购,酒店团购等,只有想不到,没有团不到!开心团购,尽在窝窝网上团购!'),
+    u'糯米网' : (u'http://www.nuomi.com/', u'nuomi', u'糯米网团购-消费者满意度最好的团购网,美食、ktv、电影、自助餐团购1折起!天天特价酒店!更有全网最低商品折扣,一流的团购服务,100%品质保证,糯米网-让生活更精彩!'),
+    u'大众点评团' : (u'http://t.dianping.com/', u'dianpingt', u'大众点评团是中国领先的本地生活消费平台，致力于为消费者提供本地餐馆美食、电影、KTV、休闲娱乐、酒店旅游、美容保健、婚庆亲子、购物等生活服务信息。您身边的团购导航，吃喝玩乐，精彩生活，放心团购尽在大众点评团。'),
+    u'聚美优品' : (u'http://www.jumei.com/', u'jumei', u'聚美优品-全球化妆品界口碑一流限时特卖网站，欧莱雅等国际一线大牌官方授权入驻，每日推荐超值折后正品，名品服饰等，100%正品、30天拆封无条件退货、全国配送，6小时闪电发货，千万用户口碑保证，让变美更简单，聚美优品值得信赖！'),
+    u'携程' : (u'http://www.ctrip.com/', u'ctrip', u'携程酒店预订、机票预订、旅游度假一站式解决，月月狂减天天低价，酒店预订保证低价，景点门票1000万大返现。酒店、机票折扣低至2折起，官网预订有保障，部分热门航线享免费接送机服务，热线全天候为您服务，立即访问ctrip.com！ '),
+    u'网票网' : (u'http://www.wangpiao.com/', u'wangpiao', u'网票网是中国最专业的电影票网上购买预订网站。覆盖全国40多个城市,合作影院近300家。全年为您提供优惠电影票网上订购服务,让您拥有网上预订电影票一站式服务。'),
+    u'中国足彩网' : (u'http://www.zgzcw.com/', u'zgzcw', u'专业彩票代购合买平台,彩票资讯信息,奥运彩票,图文分析,开奖公告等。'),
+    u'当当网' : (u'http://www.dangdang.com/', u'dangdang', u'当当网（股票代码：DANG），全球领先的综合性网上购物中心。超过100万种商品在线热销！图书、孕.婴.童、服装鞋包、家居家纺、数码3C等几十大类，正品行货！20城市当日达，150城市次日送达，货到付款！上门退换货！'),
+    u'一号店' : (u'http://www.yhd.com/', u'yhd', u'知名综合网上购物中心，数百万种商品在线热销!正品行货，低至1折，团购更优惠!休闲零食特价、健康进口食品、美容护理、厨卫家居、母婴玩具促销、生活电器特卖、手机帮你省50元、营养保健等应有尽有。点点鼠标，轻松到家，畅享一站式网上购物!'),
+    u'淘宝网' : (u'http://www.taobao.com/', u'taobao', u'亚洲最大的网上交易平台,拥有近2亿商品,提供安全便捷的购物体验,提供先行赔付、假一赔三、7天无理由退货等售后服务。'),
+    u'亚马逊（返点）' : (u'http://www.amazon.cn/', u'amazon', u'亚马逊中国，综合网购商城，销售图书、电脑、数码家电、服饰箱包、母婴百货等29大类上千万种产品。亚马逊中国承诺：正品行货天天低价，机打发票全国联保。亚马逊中国提供专业服务：货到付款，满29免运费，30天内可退换货。'),
+    u'拍拍网' : (u'http://www.paipai.com/', u'paipai', u'拍拍网为你的网购提供男女服装、美容、家居、家电、3C数码、话费充值、游戏点卡充值等优质商品,更提供先收货后付款、先行赔付、假一赔三、七天无理由退换货等。'),
+    u'一号商城' : (u'http://www.1mall.com/', u'1mall', u'优质生活网上购物平台，精选数百万种商品，高满意度人气购物网站！涵盖美食特产、服饰鞋靴、数码家电、家居建材、母婴玩具、保健营养、图书虚拟等十大品类，保证正品行货！只需点点鼠标，畅享一站式网上购物!'),
+    u'一淘巨优惠' : (u'http://e.etao.com/', u'etao', u'精选全网促销信息汇聚一淘巨优惠,京东商城,当当网,卓越网,上海一号店等知名网站促销信息精心推送.折扣,比较,快捷支付给您安心,放心的一站式购物体验.'),
+    u'天猫' : (u'http://www.tmall.com/', u'tmall', u'天猫原名“淘宝商城”，是一个综合性购物网站。淘宝网全新打造的B2C（Business-to-Consumer，商业零售）。其整合数千家品牌商、现货。'),
+    u'京东商城' : (u'http://www.jd.com/', u'jd', u'京东商城是专业的综合性网上购物商城。百万种商品，家用电器、手机数码、服装、电脑、母婴、化妆、图书等十几大类。京东商城承诺：所售商品100％正品行货，全国联保，机打发票，价格更实惠；支持货到付款，送货上门及POS刷卡服务！'),
+    u'凡客诚品' : (u'http://www.vancl.com/', u'vancl', u'凡客诚品，具广泛影响力的互联网快时尚品牌，极具性价比的服装和完善的客户体验成为网民购买的优先选择！产品涵盖时尚男装、魅力女装、运动户外，潮流鞋品等七大品类，支持全国1100城市货到付款、当面试穿、30天无条件退换货！'),
+    u'易迅' : (u'http://www.yixun.com/', u'yixun', u'易迅网在线销售电脑产品、数码通讯、家居家电、办公文具、日用百货五大类上千个品牌、数万种商品。易哥"闪电送",上午订货,下午配送!易迅网承诺:100%正品!支持货到付款,机打发票,分期付款,送货上门及POS机刷卡服务!'),
+    u'国美电器' : (u'http://www.gome.com.cn/', u'gome', u'国美在线——国美电器官方网上商城。打造全网底价平台，倾情大促尽情享受。平板电视、冰箱、数码、手机、电脑、百货、图书等全品类商品，快速送达、正品保障，网上国美，天天底价！'),
+    u'新蛋商城' : (u'http://www.newegg.com.cn/', u'newegg', u'商品齐全的精品网上购物商城,在线销售手机、电脑、笔记本、数码通讯、家电、服装、化妆品、运动、礼品、食品等数万类商品。承诺全场正品低价,及时发货,配送到家,货到付款。'),
+    u'苏宁易购' : (u'http://www.suning.com/', u'suning', u'苏宁易购，苏宁旗下综合网上购物商城。主营家电、3C、日用百货、图书、机票酒店、母婴、酒水等数百万种商品。拥有国内领先的女性购物平台红孩子。100%正品，全国联保，全场免运费，千城本地快捷配送，可门店自提，支持货到付款，让您安心购物！'),
+    u'乐蜂网' : (u'http://www.lefeng.com/', u'lefeng', u'『乐蜂网』是著名主持人李静创办的女性时尚购物网站,主营面部护理、彩妆香水、健康保养和服装配饰等品类,100%正品45天无条件退换货,客服电话400-000-1818。明星达人入驻乐蜂网达人社区“蜂向标”,分享化妆心得、国际大牌免费试用！')
+    }
+    
     catIdNameMap = {}
     
     def execRequest(self, reqObj, loggerTag):
@@ -63,27 +106,34 @@ class AllianceTask():
 
     '''处理联盟信息的回调函数'''
     def handleAllianceInfo(self, request, result):
+        siteSet = set()
         for webInfo in result['response']['web_list']['web']:
-            result = MBDB.query("insert into electric_purchaser " \
-               "set merchant_id=$merchant_id, name=$name, merchant_cat_id=$merchant_cat_id, " \
-               "merchant_cat_name=$merchant_cat_name, type=$type, url=$url, logo_url=$logo_url, " \
-               "click_url=$click_url, url_source=$url_source, rebate=$rebate, rebate_info=$rebate_info, " \
-               "collection=$collection, click_rate=$click_rate, sale_promotion=$sale_promotion " \
-               "on duplicate key update click_url=$click_url",
-               sql_vars={'merchant_id':webInfo['web_id'],
-                         'name':webInfo['web_name'],
-                         'merchant_cat_id':webInfo['web_catid'],
-                         'merchant_cat_name':self.catIdNameMap[webInfo['web_catid']],
-                         'type':1,
-                         'url':'test_url',
-                         'logo_url':webInfo['logo_url'],
-                         'click_url':webInfo['web_o_url'],
-                         'url_source':1,
-                         'rebate':1 if webInfo['commission'] else 2,
-                         'rebate_info':webInfo['commission'],
-                         'collection':0,
-                         'click_rate':0,
-                         'sale_promotion':1})
+            if self.SITE_INFO_MAPPER.has_key(webInfo['web_name']) and not webInfo['web_name'] in siteSet:
+                siteSet.add(webInfo['web_name'])
+                siteInfo = self.SITE_INFO_MAPPER[webInfo['web_name']]
+                MBDB.query("insert into electric_purchaser " \
+                   "set merchant_id=$merchant_id, name=$name, merchant_cat_id=$merchant_cat_id, " \
+                   "merchant_cat_name=$merchant_cat_name, type=$type, url=$url, logo_url=$logo_url, " \
+                   "pretty_logo=$pretty_logo, click_url=$click_url, description=$description, " \
+                   "url_source=$url_source, rebate=$rebate, rebate_info=$rebate_info, " \
+                   "collection=$collection, click_rate=$click_rate, sale_promotion=$sale_promotion " \
+                   "on duplicate key update click_url=$click_url",
+                   sql_vars={'merchant_id':webInfo['web_id'],
+                             'name':webInfo['web_name'],
+                             'merchant_cat_id':webInfo['web_catid'],
+                             'merchant_cat_name':self.catIdNameMap[webInfo['web_catid']],
+                             'type':1,
+                             'url':siteInfo[0],
+                             'logo_url':webInfo['logo_url'],
+                             'pretty_logo':siteInfo[1],
+                             'click_url':webInfo['web_o_url'],
+                             'description':siteInfo[2],
+                             'url_source':1,
+                             'rebate':1 if webInfo['commission'] else 2,
+                             'rebate_info':webInfo['commission'],
+                             'collection':0,
+                             'click_rate':0,
+                             'sale_promotion':1})
         
 _AllianceTask = AllianceTask()
     
