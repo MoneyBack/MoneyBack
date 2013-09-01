@@ -133,14 +133,20 @@ class AllianceTask():
                              'click_url':webInfo['web_o_url'],
                              'description':siteInfo[2],
                              'url_source':1,
-                             'rebate':1 if webInfo['commission'] else 2,
+                             'rebate':1 if webInfo['commission'] else 0,
                              'rebate_info':webInfo['commission'],
                              'collection':0,
                              'click_rate':0,
                              'sale_promotion':1})
+        toDelMerchants = []
+        # 找出过期的站点
         for merchant in merchants:
-            if merchantsMap.has_key(str(merchant.merchant_id)) and cmp(merchant.name, merchantsMap[str(merchant.merchant_id)]) == 0:
-                pass
+            if not merchantsMap.has_key(str(merchant.merchant_id)) or not cmp(merchant.name, merchantsMap[str(merchant.merchant_id)]) == 0:
+                toDelMerchants.append(merchant)
+        #更新该站点为不返利状态
+        for merchant in toDelMerchants:
+            MBDB.update(DB_TABLE_ELECTRIC_PURCHASER, where="merchant_id=$merchant_id and name=$name", rebate=0,
+                            sql_vars={'merchant_id':merchant.merchant_id, 'name':merchant.name})
         
 _AllianceTask = AllianceTask()
     

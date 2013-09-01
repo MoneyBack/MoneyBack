@@ -31,6 +31,21 @@ WEBSITE_CATEGORY_REQUEST_FIELDS = "web_catid,web_cname,amount,web_type,modified_
 WEBSITE_LIST_REQUEST_FIELDS = "web_id,web_name,web_catid,logo_url,web_o_url,commission,total"
 #################联盟相关配置 End  ###################
 
+#################Session相关配置 Start###################
+SESSION_COOKIE_NAME = 'mb_session_id'
+SESSION_TIMEOUT = 30 * 60 #半个小时
+#################Session相关配置 End  ###################
+
+#################Cache相关配置 Start###################
+CACHE_HOST = '127.0.0.1'
+CACHE_PORT = 12000
+CACHE_SERVERS=['127.0.0.1:%d' % CACHE_PORT]
+CACHE_MEM_SIZE = 100
+CACHE_PID_FILE = '/tmp/memcached.pid'
+START_LOCAL_CACHE_SERVER_CMD = 'memcached -d -m %d -p %d -P %s' % (CACHE_MEM_SIZE, CACHE_PORT, CACHE_PID_FILE)
+STOP_LOCAL_CACHE_SERVER_CMD = 'kill `cat %s`' % CACHE_PID_FILE
+#################Cache相关配置 End  ###################
+
 ############database configure information############
 DB_USER = 'root'
 DB_PASSWD = 'rootpwd'

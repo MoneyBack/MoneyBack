@@ -4,11 +4,13 @@ Created on Jul 18, 2013
 
 @author: Carl, Aaron
 '''
+
+import os
 import web
 import mb
 from web.webapi import HTTPError
 from mb.logger import MBLogger
-from mb.config import ERROR_NO_404_STR, ERROR_NO_500_STR
+from mb.config import ERROR_NO_404_STR, ERROR_NO_500_STR, START_LOCAL_CACHE_SERVER_CMD
 from mb.actions import homeAction
 from mb.scheduler import Scheduler
 from mb.db import MBDB
@@ -18,10 +20,11 @@ _Template = None
 
 class Context():
     def init(self):
+        os.system(START_LOCAL_CACHE_SERVER_CMD)
         global _Template
         _Template  = mb.template.Template()
         _MBDB = MBDB
-        _scheduler = Scheduler()
+#         _scheduler = Scheduler()
 
 class Home:
     def GET(self):
