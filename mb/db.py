@@ -5,9 +5,11 @@ Created on Jul 11, 2013
 @author: Carl, Aaron
 '''
 
+import os
 import subprocess
 import web, config
 from logger import MBLogger
+from mb.config import DB_INIT_FLAG
 
 '''
 创建/连接数据库对象：
@@ -47,8 +49,12 @@ db.delete('user', where='id=$id', vars={'id':100})
 
 class DB():
     def __init__(self):
-        self.execSQLBatch('mysql -u%s -p%s' % (config.DB_USER, config.DB_PASSWD), 'source ' + config.INIT_DEV_ENV, "Init Environment", "Error occurred while initializing development environment")
-        self.execSQLBatch('mysql -u%s -p%s' % (config.DB_USER, config.DB_PASSWD), 'source ' + config.INIT_TABLES, "Init Tables", "Error occurred while initializing development environment")
+        if not os.path.exists(DB_INIT_FLAG):
+            self.execSQLBatch('mysql -u%s -p%s' % (config.DB_USER, config.DB_PASSWD), 'source ' + config.INIT_DEV_ENV, "Init Environment", "Error occurred while initializing development environment")
+            self.execSQLBatch('mysql -u%s -p%s' % (config.DB_USER, config.DB_PASSWD), 'source ' + config.INIT_TABLES, "Init Tables", "Error occurred while initializing development environment")
+            os.mknod(DB_INIT_FLAG)
+        else:
+            MBLogger.debug("Already init environment & tables, skip ... ")
         self._MASTER = web.database(
             dbn = config.DB_MASTER_TYPE,
             host = config.DB_MASTER_HOST,

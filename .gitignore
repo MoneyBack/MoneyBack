@@ -1,5 +1,6 @@
 *.pyc
 *.log
+.mb_*
 # C extensions
 *.so
 
