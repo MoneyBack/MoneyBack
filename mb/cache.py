@@ -31,3 +31,5 @@ class Cache():
     
     def delete(self, key, time=0):
         return self.mc.delete(key, time=time)
+
+MBCache = Cache()

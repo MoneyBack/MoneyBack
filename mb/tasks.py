@@ -9,8 +9,9 @@ import json
 from mb.logger import MBLogger
 from mb.config import WEBSITE_TYPE_BUSINESS, WEBSITE_CATEGORY_REQUEST_FIELDS, WEBSITE_LIST_REQUEST_FIELDS, APP_KEY, APP_SECRET
 from mb.alliance import YiqifaAPI, WebsiteCategoryReqeust, WebsiteListRequest
-from mb.config import DB_TABLE_ELECTRIC_PURCHASER
+from mb.config import DB_TABLE_ELECTRIC_PURCHASER, CACHE_PREFIX_ALLIANCE
 from mb.db import MBDB
+from mb.cache import MBCache
 
 #################Alliance Task Start###################
 '''获取联盟信息Task'''
@@ -147,6 +148,12 @@ class AllianceTask():
         for merchant in toUpdateMerchants:
             MBDB.update(DB_TABLE_ELECTRIC_PURCHASER, where="merchant_id=$merchant_id and name=$name", rebate=0,
                             sql_vars={'merchant_id':merchant.merchant_id, 'name':merchant.name})
+            # 更新缓存中的信息
+            merchantKey = '%s%d' % (CACHE_PREFIX_ALLIANCE, merchant.merchant_id)
+            merchantInfo = MBCache.get(merchantKey)
+            if merchantInfo:
+                merchantInfo['rebate'] = 0
+                MBCache.replace(merchantKey, merchantInfo)
         
 _AllianceTask = AllianceTask()
     

@@ -22,6 +22,10 @@ ERROR_NO_404 = string.atoi(ERROR_NO_404_STR)
 ERROR_NO_500 = string.atoi(ERROR_NO_500_STR)
 
 STATUS_FOLDER_NAME = ".status"
+STATUS_FOLDER = os.path.join(os.path.dirname(os.path.dirname(__file__)), '%s%s' % (STATUS_FOLDER_NAME, os.path.sep))
+'''如果状态文件夹不存在，则创建该文件夹'''
+if not os.path.exists(STATUS_FOLDER):
+    os.makedirs(STATUS_FOLDER)
 
 #################联盟相关配置 Start###################
 APP_KEY = "137568413663310785"
@@ -46,15 +50,18 @@ CACHE_MEM_SIZE = 100
 CACHE_PID_FILE = '/tmp/memcached.pid'
 START_LOCAL_CACHE_SERVER_CMD = 'memcached -d -m %d -p %d -P %s' % (CACHE_MEM_SIZE, CACHE_PORT, CACHE_PID_FILE)
 STOP_LOCAL_CACHE_SERVER_CMD = 'kill `cat %s`' % CACHE_PID_FILE
+CACHE_PREFIX_ALLIANCE = 'alliance_'
+CACHE_PREFIX_CATRGORY = 'alliance_cats'
+CACHE_PREFIX_SUB_CATEGORY = 'alliance_sub_cat_'
 #################Cache相关配置 End  ###################
 
 ############database configure information############
 DB_USER = 'root'
 DB_PASSWD = 'rootpwd'
 DB_INITED_STATUS = 'mb_db_inited'
-INIT_DEV_ENV = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'db%sinit_env.sql' % os.sep)
-INIT_TABLES = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'db%sinit_tables.sql' % os.sep)
-DB_INITED = os.path.join(os.path.dirname(os.path.dirname(__file__)), '%s%s%s' % (STATUS_FOLDER_NAME, os.sep, DB_INITED_STATUS))
+INIT_DEV_ENV = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'db%sinit_env.sql' % os.path.sep)
+INIT_TABLES = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'db%sinit_tables.sql' % os.path.sep)
+DB_INITED = os.path.join(STATUS_FOLDER, DB_INITED_STATUS)
 
 DB_TABLE_ELECTRIC_PURCHASER = 'electric_purchaser'
 DB_TABLE_PERSONAL_PAGE = 'personal_page'
