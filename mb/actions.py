@@ -12,6 +12,9 @@ class HomeAction():
     def getHomeData(self):
         homeData = {}
         allSiteInfos =  MBDB.select(DB_TABLE_ELECTRIC_PURCHASER)
+        for siteInfo in allSiteInfos:
+            pass
+        return homeData
         
 
 homeAction = HomeAction()

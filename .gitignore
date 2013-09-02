@@ -1,11 +1,11 @@
 *.pyc
 *.log
-.mb_*
 # C extensions
 *.so
 
 # Packages
 logs
+.status
 .metadata
 .settings
 *.egg
