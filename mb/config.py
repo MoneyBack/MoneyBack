@@ -51,7 +51,7 @@ CACHE_PID_FILE = '/tmp/memcached.pid'
 START_LOCAL_CACHE_SERVER_CMD = 'memcached -d -m %d -p %d -P %s' % (CACHE_MEM_SIZE, CACHE_PORT, CACHE_PID_FILE)
 STOP_LOCAL_CACHE_SERVER_CMD = 'kill `cat %s`' % CACHE_PID_FILE
 CACHE_PREFIX_ALLIANCE = 'alliance_'
-CACHE_PREFIX_CATRGORY = 'alliance_cats'
+CACHE_CATRGORYS = 'alliance_cats'
 CACHE_PREFIX_SUB_CATEGORY = 'alliance_sub_cat_'
 #################Cache相关配置 End  ###################
 
