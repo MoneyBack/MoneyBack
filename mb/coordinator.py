@@ -28,8 +28,7 @@ class Context():
 
 class Home:
     def GET(self):
-        data = homeAction.getHomeData()
-        return _Template.render("home", data=data)
+        return _Template.render("home", data=homeAction.getData())
 
 class Redirect:
     def GET(self, path):
@@ -37,7 +36,7 @@ class Redirect:
 
 class AboutUs:
     def GET(self):
-        return _Template.render("about_us")
+        return _Template.render("about")
 
 class Pretty(object):
     def handleError(self, message, errno):

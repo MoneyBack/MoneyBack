@@ -41,7 +41,7 @@ class Caretaker(object):
         return app.wsgifunc()
     
     def initSession(self, app):
-        self.session = web.session.Session(app, MemCacheStore(), initializer={'username':'Guest'})
+        self.session = web.session.Session(app, MemCacheStore(), initializer={'loginLevel':0, 'userInfo':{'name':'Guest'}})
         
     def sessionHook(self):
         web.ctx.session = self.session

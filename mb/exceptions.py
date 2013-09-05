@@ -7,6 +7,10 @@ Created on Jul 18, 2013
 
 from logger import MBLogger
 
+class CacheInvalidError(Exception):
+    '''Cache数据过期'''
+    pass
+
 class ServerError(Exception):
     '''
     各种Server错误
