@@ -12,7 +12,7 @@ urls = (
     '/', 'Home',
     '/(.*)/', 'Redirect',
     '/error/(\d+)', 'Error',
-    '/about_us', 'AboutUs'
+    '/about', 'AboutUs'
 )
 
 ERROR_NO_404_STR = "404"

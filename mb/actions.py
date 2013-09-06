@@ -19,6 +19,15 @@ class HomeAction():
     
     def getSession(self):
         # 读取Cookie信息，检测Session是否需要重新生成
+        mbSession = web.ctx.session
+        # 如果已经登录
+        if mbSession.loginLevel > 0:
+            pass
+        else:
+            # 未登录，检查Cookie信息，（如果有登录信息则重新生成Session，否则为匿名用户）
+            mbCookie = web.cookies()
+            mbCookie.get('')
+        web.ctx.session.myFavSites=['test']
         return web.ctx.session
     
     #先从缓存取相关信息，如果没有则从数据库取信息并放入缓存
@@ -33,11 +42,11 @@ class HomeAction():
         # 已登录用户
         if session.loginLevel > 0:
             homeData['myFavSites'] = session.myFavSites
-            homeData['login'] = True
+            homeData['loggedIn'] = True
         # Guest用户
         else:
             homeData['myFavSites'] = self.getDefaultFavSites()
-            homeData['login'] = False
+            homeData['loggedIn'] = False
         return homeData
         
     def getDefaultFavSites(self):
