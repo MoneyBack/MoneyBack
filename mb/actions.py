@@ -12,22 +12,23 @@ from mb.exceptions import CacheInvalidError
 import threading
 import web
 from mb.logger import MBLogger
+from mb.utils import MBUtils
 
 class HomeAction():
     
     _UPDATE_CACHE = 'UpdatingHomeDataCache'
     _waiter = threading.Event()
-    _DEFAULT_FAV_SITES = ['http://www.jd.com/',
+    _DEFAULT_FAV_SITES = ['http://www.taobao.com/',
+                        'http://www.jd.com/',
+                        'http://www.lefeng.com/',
                         'http://www.amazon.cn/',
-                        'http://www.taobao.com/',
                         'http://www.yhd.com/',
                         'http://www.dangdang.com/',
-                        'http://www.jumei.com/',
                         'http://www.suning.com/',
-                        'http://www.vipshop.com/',
-                        'http://www.lefeng.com/',
-                        'http://www.qunar.com/',
                         'http://t.dianping.com/',
+                        'http://www.vipshop.com/',
+                        'http://www.qunar.com/',
+                        'http://www.jumei.com/',
                         'http://www.yaofang.cn/']
     
     def getSession(self, urlIdMap):
@@ -45,10 +46,10 @@ class HomeAction():
                 mbSession.userInfo.userName = userName
             myFavSites = mbCookie.get('myFavSites')
             if myFavSites:
-                mbSession.myFavSites = myFavSites
+                mbSession.myFavSites = myFavSites.split(',')
             else:
                 mbSession.myFavSites = self.getDefaultFavSites(urlIdMap)
-                web.setcookie('myFavSites', mbSession.myFavSites, 24 * 60 * 60)
+                web.setcookie('myFavSites', ','.join(mbSession.myFavSites), 24 * 60 * 60)
         return mbSession
     
     def getDefaultFavSites(self, urlIdMap):
@@ -72,7 +73,7 @@ class HomeAction():
             homeData['loggedIn'] = session.loggedIn
         else:
             MBLogger.error('Failed to fetch the home information ... ')
-        return homeData
+        return (homeData, MBUtils.toJsonStr(homeData) if homeData else None)
         
     def getHomeDataFromCache(self):
         while MBCache.get(self._UPDATE_CACHE):
@@ -112,8 +113,8 @@ class HomeAction():
                     catSites.append(merchantId)
                 else:
                     catSiteMap[merchantCatId] = [merchantId]
-                MBCache.set('%s%s' % (CACHE_PREFIX_ALLIANCE, merchantId), siteInfo)
-                homeData['sites'][merchantId] = siteInfo
+                MBCache.set('%s%s' % (CACHE_PREFIX_ALLIANCE, merchantId), dict(siteInfo))
+                homeData['sites'][merchantId] = dict(siteInfo)
                 homeData['urlSiteIdMap'][siteInfo['url']] = merchantId
             MBCache.set(CACHE_CATRGORYS, list(allCatSet))
             homeData['categorys'] = list(allCatSet)
@@ -123,6 +124,10 @@ class HomeAction():
         finally:
             MBCache.delete(self._UPDATE_CACHE)
         return homeData
+    
+    def openSite(self, siteId):
+        MBDB.query("update %s set click_rate=click_rate+1 where merchant_id=$merchant_id" % DB_TABLE_ELECTRIC_PURCHASER,
+            sql_vars={'merchant_id':siteId})
         
 
 homeAction = HomeAction()

@@ -28,7 +28,8 @@ class Context():
 
 class Home:
     def GET(self):
-        return _Template.render("home", data=homeAction.getData())
+        homeData, jsonStr = homeAction.getData()
+        return _Template.render("home", data=jsonStr or {}, **homeData)
 
 class Redirect:
     def GET(self, path):
@@ -37,6 +38,12 @@ class Redirect:
 class AboutUs:
     def GET(self):
         return _Template.render("about")
+    
+class OpenSite:
+    def POST(self):
+        siteId = web.input()['siteId']
+        if siteId:
+            homeAction.openSite(siteId)
 
 class Pretty(object):
     def handleError(self, message, errno):

@@ -5,12 +5,12 @@ Created on Aug 22, 2013
 @author: Carl, Aaron
 '''
 
-import json
 from mb.logger import MBLogger
 from mb.config import WEBSITE_TYPE_BUSINESS, WEBSITE_CATEGORY_REQUEST_FIELDS, WEBSITE_LIST_REQUEST_FIELDS, APP_KEY, APP_SECRET
 from mb.alliance import YiqifaAPI, WebsiteCategoryReqeust, WebsiteListRequest
 from mb.config import DB_TABLE_ELECTRIC_PURCHASER, CACHE_PREFIX_ALLIANCE
 from mb.db import MBDB
+from mb.utils import MBUtils
 from mb.cache import MBCache
 
 #################Alliance Task Start###################
@@ -74,7 +74,7 @@ class AllianceTask():
         apiObj = YiqifaAPI(APP_KEY, APP_SECRET)
         jsonStr = apiObj.call(reqObj)
         MBLogger.debug("%s: %s" % (loggerTag, jsonStr))
-        jsonObj = json.loads(jsonStr)
+        jsonObj = MBUtils.toJson(jsonStr)
         if jsonObj.has_key('errors'):
             errors = []
             for errorInfo in jsonObj['errors']['error']:
