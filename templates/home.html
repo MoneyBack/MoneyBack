@@ -87,15 +87,23 @@
 	    	{% for siteId in myFavSites %}
 	    	<li class="card text-center">
                <a class="merchant" id="{{ sites[siteId].merchant_id }}" href="javascript:void(0);" target="_blank">
-                   <img src="/static/img/{{type if type else 'default'}}/sites/{{ sites[siteId].pretty_logo }}.png" alt="">
+                   <img src="/static/img/{{type if type else 'default'}}/sites/{{ sites[siteId].pretty_logo }}.png" alt=""/>
                </a>
-               <div class="s_info hide">{{ sites[siteId].rebate_info }}</div>
+               <div class="s_info hide">
+               	   <div class="s_info_star"></div>
+               	   <div class="s_info_left" title="{{ sites[siteId].rebate_info }}">{{ sites[siteId].rebate_info }}</div>
+               	   <div class="delete"></div>
+               </div>
+               <div class="f_info hide">
+               	   <div class="mb_mark" title="此网站参与返利"></div>
+               	   <div class="mb_jing" title="精选推荐网站"></div>
+               </div>
            	</li>
 	        {% endfor %}                         
 	    </ul>
 	</section>
 </article>
-<footer class="fixedContainer no-radius navbar-fixed-bottom">
+<footer class="fixedContainer no-radius">
 	<div class="text-center">
 		<div class="ft-info">
 			<hr class="divider">
