@@ -11,9 +11,35 @@ $(document).ready(function(){
 			});
 		} else {
 			// 添加站点
+			// 获得站点数据
+			// ...
+			// 设置站点数据
+			var merchantImg = $(this).find('img');
+			merchantImg.unbind();
+			merchantImg.attr('src', '/static/img/default/sites/yhd.png');
+			merchantImg.parent().attr('id', '1104');
+			var sInfo = merchantImg.parent().siblings('.s_info');
+			sInfo.removeClass('none');
+			var sInfoLeft = sInfo.find('.s_info_left');
+			sInfoLeft.attr('title', 'title-test');
+			sInfoLeft.text('value-test');
+			var fInfo = merchantImg.parent().siblings('.f_info');
+			fInfo.removeClass('none');
 		}
 	});
 	$('.s_info .delete').click(function(){
-		alert('test');
+		$(this).parent().addClass('none');
+		$(this).parent().siblings('.f_info').addClass('none');
+		var siblingA = $(this).parent().siblings('a');
+		siblingA.attr('id', '');
+		var merchantImg = siblingA.find('img');
+		var rnd = Math.floor(Math.random() * 3 + 1);
+		merchantImg.attr('src', '/static/img/default/add' + rnd + '.png');
+		merchantImg.bind('mouseover', function(){
+			merchantImg.attr('src', '/static/img/default/add_hover' + rnd + '.png');
+		});
+		merchantImg.bind('mouseout', function(){
+			merchantImg.attr('src', '/static/img/default/add' + rnd + '.png');
+		});
 	});
 });

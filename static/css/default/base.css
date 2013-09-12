@@ -86,7 +86,7 @@ p {
 	display: none;
 }
 
-.card:hover .s_info {
+.card:hover .s_info:not(.none) {
 	filter: Alpha(opacity=70);
 	background: #0088cc;
 	background: rgba(0, 0, 0,.3);
@@ -100,7 +100,7 @@ p {
 	cursor:default;
 }
 
-.card:hover .f_info {
+.card:hover .f_info:not(.none) {
 	width: 190px;
 	height: 22px;
 	line-height: 22px;
@@ -126,15 +126,15 @@ p {
 .mb_prefer {
 	float:right;
 	margin-top:2px;
-	margin-right:5px;
+	margin-right:3px;
 	cursor:pointer;
-	background: url(/static/img/default/utils.png) no-repeat 0px -406px;
+	background: url(/static/img/default/utils.png) no-repeat -2px -406px;
 	width:16px;
 	height:16px;
 }
 
 .mb_prefer:hover {
-	background: url(/static/img/default/utils.png) no-repeat 0px -439px;
+	background: url(/static/img/default/utils.png) no-repeat -2px -439px;
 }
 
 .s_info_star {
@@ -148,7 +148,7 @@ p {
 }
 
 .s_info_star:hover {
-	background: url(/static/img/default/utils.png) no-repeat 0px -663px;
+	background: url(/static/img/default/utils.png) no-repeat -1px -663px;
 }
 
 .s_info_left {
