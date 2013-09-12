@@ -114,29 +114,41 @@ p {
 	float:right;
 	margin-right:5px;
 	cursor:pointer;
-	background: url(/static/img/default/mb_mark.png);
+	background: url(/static/img/default/utils.png) no-repeat 0px -594px;
 	width:18px;
 	height:18px;
 }
 
-.mb_jing {
+.mb_mark:hover {
+	background: url(/static/img/default/utils.png) no-repeat 0px -678px;
+}
+
+.mb_prefer {
 	float:right;
 	margin-top:2px;
 	margin-right:5px;
 	cursor:pointer;
-	background: url(/static/img/default/mb_jing.png);
+	background: url(/static/img/default/utils.png) no-repeat 0px -406px;
 	width:16px;
 	height:16px;
+}
+
+.mb_prefer:hover {
+	background: url(/static/img/default/utils.png) no-repeat 0px -439px;
 }
 
 .s_info_star {
 	float:left;
 	width:16px;
 	height:16px;
-	background: url(/static/img/default/star.png);
+	background: url(/static/img/default/utils.png) no-repeat -1px -644px;
 	margin-left:3px;
 	margin-top:3px;
 	margin-right:3px;
+}
+
+.s_info_star:hover {
+	background: url(/static/img/default/utils.png) no-repeat 0px -663px;
 }
 
 .s_info_left {
@@ -152,9 +164,13 @@ p {
 	margin-top:3px;
 	margin-right:5px;
 	cursor:pointer;
-	background: url(/static/img/default/close.png);
+	background: url(/static/img/default/utils.png) no-repeat 0px -4px;
 	width:16px;
 	height:16px;
+}
+
+.s_info .delete:hover {
+	background: url(/static/img/default/utils.png) no-repeat 0px -51px;
 }
 
 #sites li {

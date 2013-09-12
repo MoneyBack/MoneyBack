@@ -9,6 +9,11 @@ $(document).ready(function(){
 				data: {siteId:this.id},
 				success: function(data) {}
 			});
+		} else {
+			// 添加站点
 		}
+	});
+	$('.s_info .delete').click(function(){
+		alert('test');
 	});
 });
