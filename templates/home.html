@@ -82,25 +82,36 @@
 	</div>
 </header>
 <article class="fixedContainer"> 
-	<section id="sites">
+	<section id="fav_sites">
 	    <ul>
 	    	{% for siteId in myFavSites %}
 	    	<li class="card text-center">
-               <a class="merchant" id="{{ sites[siteId].merchant_id }}" href="javascript:void(0);" target="_blank">
+               <a class="merchant" id="{{ sites[siteId].merchant_id }}" href="javascript:void(0);">
                    <img src="/static/img/{{type if type else 'default'}}/sites/{{ sites[siteId].pretty_logo }}.png" alt=""/>
                </a>
                <div class="s_info hide">
-               	   <div class="s_info_star"></div>
+               	   <div class="s_info_star {{'invisible' if sites[siteId].rebate == 0}}"></div>
                	   <div class="s_info_left" title="{{ sites[siteId].rebate_info }}">{{ sites[siteId].rebate_info }}</div>
                	   <div class="delete" title="删除"></div>
                </div>
                <div class="f_info hide">
-               	   <div class="mb_mark" title="参与返利"></div>
-               	   <div class="mb_prefer" title="推荐站点"></div>
+               	   <div class="mb_mark {{'invisible' if sites[siteId].rebate != 1}}" title="参与返利"></div>
+               	   <div class="mb_prefer {{'invisible' if sites[siteId].type != 3}}" title="推荐站点"></div>
                </div>
            	</li>
-	        {% endfor %}                         
+	        {% endfor %}
 	    </ul>
+	</section>
+	<section id="all_sites" class="hide">
+		<ul>
+			{% for id, site in sites.iteritems() %}
+			<li>
+				<a class="merchant" id="{{site.merchant_id}}" href="javascript:void(0);">
+					<img src="#"/>
+				</a>
+			</li>
+			{% endfor %}
+		</ul>
 	</section>
 </article>
 <footer class="fixedContainer no-radius">

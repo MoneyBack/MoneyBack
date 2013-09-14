@@ -173,7 +173,16 @@ p {
 	background: url(/static/img/default/utils.png) no-repeat 0px -51px;
 }
 
-#sites li {
+.s_info .invisible {
+	visibility:hidden;
+}
+
+#fav_sites li {
+	float: left;
+	list-style: none;
+}
+
+#all_sites li {
 	float: left;
 	list-style: none;
 }

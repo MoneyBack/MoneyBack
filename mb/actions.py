@@ -4,7 +4,7 @@ Created on Aug 30, 2013
 
 @author: Carl, Aaron
 '''
-from mb.config import DB_TABLE_ELECTRIC_PURCHASER
+from mb.config import DB_TABLE_ELECTRIC_PURCHASER, DEFAULT_FAV_SITES
 from mb.db import MBDB
 from mb.cache import MBCache
 from mb.config import CACHE_PREFIX_ALLIANCE, CACHE_CATRGORYS, CACHE_PREFIX_SUB_CATEGORY
@@ -18,18 +18,6 @@ class HomeAction():
     
     _UPDATE_CACHE = 'UpdatingHomeDataCache'
     _waiter = threading.Event()
-    _DEFAULT_FAV_SITES = ['http://www.taobao.com/',
-                        'http://www.jd.com/',
-                        'http://www.lefeng.com/',
-                        'http://www.amazon.cn/',
-                        'http://www.yhd.com/',
-                        'http://www.dangdang.com/',
-                        'http://www.suning.com/',
-                        'http://t.dianping.com/',
-                        'http://www.vipshop.com/',
-                        'http://www.qunar.com/',
-                        'http://www.jumei.com/',
-                        'http://www.yaofang.cn/']
     
     def getSession(self, urlIdMap):
         # 读取Cookie信息，检测Session是否需要重新生成
@@ -55,7 +43,7 @@ class HomeAction():
     def getDefaultFavSites(self, urlIdMap):
         # 获取默认的自定义页信息
         defaultFavSites = []
-        for siteUrl in self._DEFAULT_FAV_SITES:
+        for siteUrl in DEFAULT_FAV_SITES:
             defaultFavSites.append(urlIdMap[siteUrl])
         return defaultFavSites
     

@@ -11,9 +11,16 @@ $(document).ready(function(){
 			});
 		} else {
 			// 添加站点
+			$('#fav_sites').addClass('hide');
+			$('#all_sites').removeClass('hide');
+			$.each($('#all_sites li a'), function(){
+				var siteImage = $(this).children()[0];
+				$(siteImage).attr('src', sites[this.id].logo_url);
+			});
 			// 获得站点数据
 			// ...
 			// 设置站点数据
+			/*
 			var merchantImg = $(this).find('img');
 			merchantImg.unbind();
 			merchantImg.attr('src', '/static/img/default/sites/yhd.png');
@@ -24,7 +31,7 @@ $(document).ready(function(){
 			sInfoLeft.attr('title', 'title-test');
 			sInfoLeft.text('value-test');
 			var fInfo = merchantImg.parent().siblings('.f_info');
-			fInfo.removeClass('none');
+			fInfo.removeClass('none');*/
 		}
 	});
 	$('.s_info .delete').click(function(){

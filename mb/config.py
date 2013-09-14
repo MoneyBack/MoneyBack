@@ -36,6 +36,19 @@ WEBSITE_TYPE_BUSINESS = "1"
 WEBSITE_TYPE_COMMODITY = "2"
 WEBSITE_CATEGORY_REQUEST_FIELDS = "web_catid,web_cname,amount,web_type,modified_time,total"
 WEBSITE_LIST_REQUEST_FIELDS = "web_id,web_name,web_catid,logo_url,web_o_url,commission,total"
+
+DEFAULT_FAV_SITES = ['http://www.taobao.com/',
+                        'http://www.jd.com/',
+                        'http://www.lefeng.com/',
+                        'http://www.amazon.cn/',
+                        'http://www.yhd.com/',
+                        'http://www.dangdang.com/',
+                        'http://www.suning.com/',
+                        'http://t.dianping.com/',
+                        'http://www.vipshop.com/',
+                        'http://www.qunar.com/',
+                        'http://www.jumei.com/',
+                        'http://www.yaofang.cn/']
 #################联盟相关配置 End  ###################
 
 #################Session相关配置 Start###################

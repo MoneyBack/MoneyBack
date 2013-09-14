@@ -6,9 +6,8 @@ Created on Aug 22, 2013
 '''
 
 from mb.logger import MBLogger
-from mb.config import WEBSITE_TYPE_BUSINESS, WEBSITE_CATEGORY_REQUEST_FIELDS, WEBSITE_LIST_REQUEST_FIELDS, APP_KEY, APP_SECRET
+from mb.config import WEBSITE_TYPE_BUSINESS, WEBSITE_CATEGORY_REQUEST_FIELDS, WEBSITE_LIST_REQUEST_FIELDS, APP_KEY, APP_SECRET, DEFAULT_FAV_SITES, DB_TABLE_ELECTRIC_PURCHASER, CACHE_PREFIX_ALLIANCE
 from mb.alliance import YiqifaAPI, WebsiteCategoryReqeust, WebsiteListRequest
-from mb.config import DB_TABLE_ELECTRIC_PURCHASER, CACHE_PREFIX_ALLIANCE
 from mb.db import MBDB
 from mb.utils import MBUtils
 from mb.cache import MBCache
@@ -111,6 +110,7 @@ class AllianceTask():
         siteSet = set()
         merchants = MBDB.select(DB_TABLE_ELECTRIC_PURCHASER, what="merchant_id, name")
         merchantsMap = dict()
+        favSites = set(DEFAULT_FAV_SITES)
         for webInfo in result['response']['web_list']['web']:
             if self.SITE_INFO_MAPPER.has_key(webInfo['web_name']) and not webInfo['web_name'] in siteSet:
                 siteSet.add(webInfo['web_name'])
@@ -127,7 +127,7 @@ class AllianceTask():
                              'name':webInfo['web_name'],
                              'merchant_cat_id':webInfo['web_catid'],
                              'merchant_cat_name':self.catIdNameMap[webInfo['web_catid']],
-                             'type':1,
+                             'type':3 if siteInfo[0] in favSites else 1,
                              'url':siteInfo[0],
                              'logo_url':webInfo['logo_url'],
                              'pretty_logo':siteInfo[1],
