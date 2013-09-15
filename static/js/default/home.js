@@ -11,7 +11,8 @@ $(document).ready(function(){
 			});
 		} else {
 			// 添加站点
-			$('#fav_sites').addClass('hide');
+			$('#backdrop').removeClass('hide');
+			$('#homeContainer').addClass('blur');
 			$('#all_sites').removeClass('hide');
 			$.each($('#all_sites li a'), function(){
 				var siteImage = $(this).children()[0];

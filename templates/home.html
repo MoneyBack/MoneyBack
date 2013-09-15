@@ -20,107 +20,110 @@
 <style></style>
 {% endblock %}
 {% block content %}
-<div id="topbar">
-	<div class="nav-bar">
-		<div id="collections">
-			<ol class="">
-				<li>
-					<a class="nav-link" id="none" href="#">
-						<span class="name"><strong>...</strong></span>
-					</a>
-				</li>
-				<li>
-					<a class="nav-link" id="fanfan" href="#">
-						<span class="name"><strong>返返</strong></span>
-					</a>
-				</li>
-				<li>
-					<a class="nav-link" id="bijia" href="#">
-						<span class="name"><strong>比价</strong></span>
-					</a>
-				</li>
-				<li>
-					<a class="nav-link" id="blog" href="#">
-						<span class="name"><strong>博客</strong></span>
-					</a>
-				</li>
-				<li>
-					<a class="nav-link" id="bbs" href="#">
-						<span class="name"><strong>论坛</strong></span>
-					</a>
-				</li>
-			</ol>
+<div id="homeContainer">
+	<div id="topbar">
+		<div class="nav-bar">
+			<div id="collections">
+				<ol class="">
+					<li>
+						<a class="nav-link" id="none" href="#">
+							<span class="name"><strong>...</strong></span>
+						</a>
+					</li>
+					<li>
+						<a class="nav-link" id="fanfan" href="#">
+							<span class="name"><strong>返返</strong></span>
+						</a>
+					</li>
+					<li>
+						<a class="nav-link" id="bijia" href="#">
+							<span class="name"><strong>比价</strong></span>
+						</a>
+					</li>
+					<li>
+						<a class="nav-link" id="blog" href="#">
+							<span class="name"><strong>博客</strong></span>
+						</a>
+					</li>
+					<li>
+						<a class="nav-link" id="bbs" href="#">
+							<span class="name"><strong>论坛</strong></span>
+						</a>
+					</li>
+				</ol>
+			</div>
+		</div>
+		<div class="user row">
+			<div class="span11 offset1 text-center">
+				<ul class="nav nav-pills nav-btn pull-right">
+		        	<li class="active"><a href="#">登录</a></li>
+		            <li><a href="#">注册</a></li>
+		    	</ul>
+			</div>
 		</div>
 	</div>
-	<div class="user row">
-		<div class="span11 offset1 text-center">
-			<ul class="nav nav-pills nav-btn pull-right">
-	        	<li class="active"><a href="#">登录</a></li>
-	            <li><a href="#">注册</a></li>
-	    	</ul>
-		</div>
-	</div>
-</div>
-{% include 'bad_experience_alert.html' ignore missing %}
-<header id="searchWrapper" class="fixedContainer no-radius">
-	<div id="search" class="search">
-		<a href="/"><span class="logo"></span></a>
-		<form id="searchF" name="searchF" method="get" action="/search">
-			<div class="searchBoxOutter">
-				<div id="searchBoxInner" class="searchBoxInner">
-					<div id="searchBox" class="searchBox">
-						<input id="searchI" name="searchI" type="text" autocomplete="off" value="" placeholder="搜索">
+	{% include 'bad_experience_alert.html' ignore missing %}
+	<header id="searchWrapper" class="fixedContainer no-radius">
+		<div id="search" class="search">
+			<a href="/"><span class="logo"></span></a>
+			<form id="searchF" name="searchF" method="get" action="/search">
+				<div class="searchBoxOutter">
+					<div id="searchBoxInner" class="searchBoxInner">
+						<div id="searchBox" class="searchBox">
+							<input id="searchI" name="searchI" type="text" autocomplete="off" value="" placeholder="搜索">
+						</div>
 					</div>
 				</div>
-			</div>
-			<div id="searchBtnC">
-				<button id="searchBtn" class="searchBtn">
-					<span class="searchBtnIcon"></span>
-				</button>
-			</div>
-		</form>
-	</div>
-</header>
-<article class="fixedContainer"> 
-	<section id="fav_sites">
-	    <ul>
-	    	{% for siteId in myFavSites %}
-	    	<li class="card text-center">
-               <a class="merchant" id="{{ sites[siteId].merchant_id }}" href="javascript:void(0);">
-                   <img src="/static/img/{{type if type else 'default'}}/sites/{{ sites[siteId].pretty_logo }}.png" alt=""/>
-               </a>
-               <div class="s_info hide">
-               	   <div class="s_info_star {{'invisible' if sites[siteId].rebate == 0}}"></div>
-               	   <div class="s_info_left" title="{{ sites[siteId].rebate_info }}">{{ sites[siteId].rebate_info }}</div>
-               	   <div class="delete" title="删除"></div>
-               </div>
-               <div class="f_info hide">
-               	   <div class="mb_mark {{'invisible' if sites[siteId].rebate != 1}}" title="参与返利"></div>
-               	   <div class="mb_prefer {{'invisible' if sites[siteId].type != 3}}" title="推荐站点"></div>
-               </div>
-           	</li>
-	        {% endfor %}
-	    </ul>
-	</section>
-	<section id="all_sites" class="hide">
-		<ul>
-			{% for id, site in sites.iteritems() %}
-			<li>
-				<a class="merchant" id="{{site.merchant_id}}" href="javascript:void(0);">
-					<img src="#"/>
-				</a>
-			</li>
-			{% endfor %}
-		</ul>
-	</section>
-</article>
-<footer class="fixedContainer no-radius">
-	<div class="text-center">
-		<div class="ft-info">
-			<hr class="divider">
-			<a href="{{hostUrl}}/about">关于我们</a> ┊ <a href="#">大事记</a> ┊ <a href="#">广告服务</a> ┊ <a href="#">联系我们</a>
+				<div id="searchBtnC">
+					<button id="searchBtn" class="searchBtn">
+						<span class="searchBtnIcon"></span>
+					</button>
+				</div>
+			</form>
 		</div>
-	    <p><small>Copyright &copy;2013 - 2015 fanfan.com. All Rights Reserved.</small></p>
-	</div>
-</footer>
+	</header>
+	<article class="fixedContainer"> 
+		<section id="fav_sites">
+		    <ul>
+		    	{% for siteId in myFavSites %}
+		    	<li class="card text-center">
+	               <a class="merchant" id="{{ sites[siteId].merchant_id }}" href="javascript:void(0);">
+	                   <img src="/static/img/{{type if type else 'default'}}/sites/{{ sites[siteId].pretty_logo }}.png" alt=""/>
+	               </a>
+	               <div class="s_info hide">
+	               	   <div class="s_info_star {{'invisible' if sites[siteId].rebate == 0}}"></div>
+	               	   <div class="s_info_left" title="{{ sites[siteId].rebate_info }}">{{ sites[siteId].rebate_info }}</div>
+	               	   <div class="delete" title="删除"></div>
+	               </div>
+	               <div class="f_info hide">
+	               	   <div class="mb_mark {{'invisible' if sites[siteId].rebate != 1}}" title="参与返利"></div>
+	               	   <div class="mb_prefer {{'invisible' if sites[siteId].type != 3}}" title="推荐站点"></div>
+	               </div>
+	           	</li>
+		        {% endfor %}
+		    </ul>
+		</section>
+	</article>
+	<footer class="fixedContainer no-radius">
+		<div class="text-center">
+			<div class="ft-info">
+				<hr class="divider">
+				<a href="{{hostUrl}}/about">关于我们</a> ┊ <a href="#">大事记</a> ┊ <a href="#">广告服务</a> ┊ <a href="#">联系我们</a>
+			</div>
+		    <p><small>Copyright &copy;2013 - 2015 fanfan.com. All Rights Reserved.</small></p>
+		</div>
+	</footer>
+</div>
+<div id="backdrop" class="backdrop hide"></div>
+<div id="all_sites" class="hide">
+	<ul>
+		{% for id, site in sites.iteritems() %}
+		<li>
+			<a class="merchant thumbnail" id="{{site.merchant_id}}" href="javascript:void(0);">
+				<img src="#"/>
+			</a>
+		</li>
+		{% endfor %}
+	</ul>
+</div>
 {% endblock %}
